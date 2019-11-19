@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>{% block title %}{% endblock %}</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/swiper.min.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+    {% block extends_head %}{% endblock %}
+
+</head>
+<body>
+    <div class="headers">
+      <div class="logo">
+        <img src="{% static 'images/logo.png' %}">
+      </div>
+
+      <div class="headers-title">
+        <ul class="title-wapper">
+
+          {# 英文需转换为中文 #}
+            {% ifequal language "en" %}
+                <li class="title-items"><a href="/?language=en">Home</a></li>
+                <li class="title-items"><a href="{% url 'company' %}?language=en">Company</a></li>
+
+                {% if request.user.is_authenticated %}
+                    <li class="title-items"><a href="{% url 'logout' %}?language=en">Logout</a></li>
+                {% else %}
+                    <li class="title-items"><a href="{% url 'login' %}?language=en">Login</a></li>
+                {% endif %}
+
+               {# 中文 #}
+               <li class="title-items"><a href="{% url 'index' %}">中文</a></li>
+            {% else %}
+                 <li class="title-items"><a href="/">首页</a></li>
+                 <li class="title-items"><a href="{% url 'company' %}">企业</a></li>
+
+                {% if request.user.is_authenticated %}
+                    <li class="title-items"><a href="{% url 'logout' %}">注销</a></li>
+                {% else %}
+                    <li class="title-items"><a href="{% url 'login' %}">登录</a></li>
+                {% endif %}
+
+                {# 英文 #}
+                 <li class="title-items"><a href="{% url 'index' %}?language=en">English</a></li>
+            {% endifequal %}
+
+        </ul>
+      </div>
+    </div>
+
+    {% block content %}{% endblock %}
+
+
+<footer>
+   <div class="footer">
+    <div class="footer-main">
+      <div class="footer-top">
+          {% for category1 in company_categorys %}
+            <div class="footer-top-items">
+           <p>{{ category1.name }}</p>
+           <ul>
+               {% for category2 in category1.sub_cat.all %}
+                   <li><a href="">{{ category2.name }}</a></li>
+                {% endfor %}
+           </ul>
+        </div>
+          {% endfor %}
+
+      </div>
+    </div>
+   </div>
+
+    <div class="footer-bottom">
+        <p style="text-align: center;line-height: 50px;font-weight: bold;color: gray;font-size: 18px;">Copyright©2018 Rights Reserved. 电网公司 版权所有 苏ICP备08007674号</p>
+    </div>
+</footer>
+
+
+     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/swiper.min.js' %}"></script>
+
+    <!-- Initialize Swiper -->
+    <script>
+      var swiper = new Swiper('.swiper-container', {
+        notNextTick: true,
+        direction:'horizontal',
+        speed:1500,//滚动速度
+        setWrapperSize: true,
+        freeMode:true,//true则是自由模式，不会自动贴合滑动位置
+        autoplay:{
+          delay:1,
+          autoplayDisableOnInteraction:false
+        },
+        loop:true,//循环
+      　 observer:true,//修改swiper自己或子元素时，自动初始化swiper
+　　     observeParents:true,//修改swiper的父元素时，自动初始化swiper
+        spaceBetween:4,//slide之间的距离（单位px）
+        slidesPerView:6 //slide可见数量
+      });
+    </script>
+   {% block js %}{% endblock %}
+  </body>
+</html>

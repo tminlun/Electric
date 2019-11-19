@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if company %}{{ company.name }}{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="body">
+      <div class="left-right-main">
+        <div class="left-main">
+          <ul>
+            {% if category %}
+                  <li><a href="#">{{ category.name }}</a></li>
+                  {% for category2 in category.sub_cat.all %}
+                      <li style="background: #D1D1D1;"><a href="#" style="font-size: 16px;color: #000;">{{ category2.name }}</a></li>
+                  {% empty %}
+                     <li style="background: #D1D1D1;"><a href="#" style="font-size: 16px;color: #000;">没有数据</a></li>
+                  {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+
+
+    <div class="right-main">
+      <div class="right-header">
+        <p class="right-title" style="font-weight: bold;">{{ category.name }}</p>
+      </div>
+
+      <div class="content-body">
+        <h1 class="content-body-title">{{ company.name }}</h1>
+        <p class="content-body-time">{{ company.add_time }}</p>
+        <div class="content-main">
+            {{ company.desc }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

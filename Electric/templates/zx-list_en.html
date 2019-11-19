@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}企业{% endblock %}
+
+{% block content %}
+    <div class="body">
+  <div class="left-right-main">
+    <div class="left-main">
+      <ul>
+        {% for category1 in categorys %}
+        <li><a href="#">{{ category1.name_code }}</a></li>
+            {% for category2 in category1.sub_cat.all %}
+                <li style="background: #D1D1D1;">
+                    {% ifequal language "en" %}
+                        <a href="{% url 'company' %}?category2={{ category2.pk }}&language=en" style="font-size: 16px;color: #000;">
+                            {{ category2.name_code }}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'company' %}?category2={{ category2.pk }}" style="font-size: 16px;color: #000;">
+                            {{ category2.name_code }}
+                        </a>
+                    {% endifequal %}
+                </li>
+             {% endfor %}
+        {% empty %}
+            <li>暂无数据！</li>
+        {% endfor %}
+
+      </ul>
+    </div>
+
+
+    <div class="right-main">
+      <div class="right-header">
+        <p class="right-title" style="font-weight: bold;">{{ category.name_code }}</p>
+      </div>
+
+      <div class="right-list">
+        <ul>
+            {% for company in companys.object_list %}
+                <a href="{% url 'company_detail' company.pk %}?language=en">
+                    <li class="list-items">
+                    {# 封面图 #}
+                     <div class="list-items-img">
+                         <img src="{{ MEDIA_URL }}{{  company.company_front_image }}">
+                     </div>
+                    {# 内容 #}
+                      <div class="content">
+                        {{ company.desc_code|slice:"60" }}
+                      </div>
+
+                      <div class="time">
+                        <h3>{{ company.add_time|date:"m" }}</h3>
+                        <p>{{ company.add_time|date:"Y-m-d H:i:s" }}</p>
+                      </div>
+                  </li>
+                </a>
+            {% empty %}
+                <li class="list-items">暂无数据</li>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+  <nav aria-label="Page navigation" style="text-align: center;font-size: 20px;">
+  <ul class="pagination">
+      {% if companys.has_previous %}
+          <li>
+              <a href="?{{ companys.previous_page_number.querystring }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+          </li>
+      {% endif %}
+        {% for page in companys.pages %}
+            {% if page %}
+                {# 如果是当前页面 #}
+                {% ifequal page all_blog.number %}
+                    <li class="active"><a href="#">{{ page }}</a></li>
+
+                {# 如果是当前页面end #}
+                {# 如果不是当前页面 #}
+                {% else %}
+                    <li><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                {% endifequal %}
+                {# 如果不是当前页面end #}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+
+  {% if all_blog.has_next %}
+        <li>
+          <a href="?{{ all_blog.next_page_number.querystring }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+  {% endif %}
+  </ul>
+</nav>
+
+</div>
+{% endblock %}
+

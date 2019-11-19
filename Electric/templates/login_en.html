@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
+    <div class="body">
+        <div class="panel panel-default" style="width: 500px;margin: 0 auto;margin-top: 50px;">
+          <div class="panel-heading">Login</div>
+          <div class="panel-body">
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+              <div class="form-group">
+                <label for="exampleInputEmail1">username</label>
+                <input type="text" name="username" class="form-control" id="username" placeholder="用户名">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+              </div>
+               <button type="submit" class="btn btn-default" style="float: right;">Submit</button>
+            </form>
+              <div class="error">
+                  {% for k,v in login_form.errors.items %}
+                      {{ v }}
+                  {% endfor %}
+              {{ msg }}
+              </div>
+          </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

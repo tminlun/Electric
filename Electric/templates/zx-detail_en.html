@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if company %}{{ company.name_code }}{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="body">
+      <div class="left-right-main">
+        <div class="left-main">
+          <ul>
+            {% if category %}
+                  <li><a href="#">{{ category.name_code }}</a></li>
+                  {% for category2 in category.sub_cat.all %}
+                      <li style="background: #D1D1D1;"><a href="#" style="font-size: 16px;color: #000;">{{ category2.name_code }}</a></li>
+                  {% empty %}
+                     <li style="background: #D1D1D1;"><a href="#" style="font-size: 16px;color: #000;">not data</a></li>
+                  {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+
+    <div class="right-main">
+      <div class="right-header">
+        <p class="right-title" style="font-weight: bold;">{{ category.name_code }}</p>
+      </div>
+
+      <div class="content-body">
+        <h1 class="content-body-title">{{ company.name_code }}</h1>
+        <p class="content-body-time">{{ company.add_time }}</p>
+        <div class="content-main">
+            {{ company.desc_code }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

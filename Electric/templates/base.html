@@ -71,6 +71,7 @@
    <div class="footer">
     <div class="footer-main">
       <div class="footer-top">
+      {% if company_categorys %}
           {% for category1 in company_categorys %}
             <div class="footer-top-items">
            <p>{{ category1.name }}</p>
@@ -81,13 +82,19 @@
            </ul>
         </div>
           {% endfor %}
-
+     {% else %}
+          <p>没有</p>
+     {% endif %}
       </div>
     </div>
    </div>
 
     <div class="footer-bottom">
-        <p style="text-align: center;line-height: 50px;font-weight: bold;color: gray;font-size: 18px;">Copyright©2018 Rights Reserved. 电网公司 版权所有 苏ICP备08007674号</p>
+        {% ifequal language "en" %}
+            <p style="text-align: center;line-height: 50px;font-weight: bold;color: gray;font-size: 18px;">Copyright©2018 Rights Reserved. All rights reserved 苏ICP备08007674号</p>
+        {% else %}
+            <p style="text-align: center;line-height: 50px;font-weight: bold;color: gray;font-size: 18px;">Copyright©2018 Rights Reserved. 电网公司 版权所有 苏ICP备08007674号</p>
+        {% endifequal %}
     </div>
 </footer>
 

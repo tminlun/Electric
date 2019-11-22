@@ -15,10 +15,23 @@ class CompanyView(View):
         # 分类
         category2_pk = request.GET.get("category2", 1)
         if category2_pk:
-            # 企业
-            category = categorys.get(pk=category2_pk)
-            companys = Company.objects.filter(category=category)
+            try:
+                # 企业
+                category = categorys.get(pk=category2_pk)
+                companys = Company.objects.filter(category=category)
+            except:
+                if language == "en":
+                    return render(request, 'zx-list_en.html', {
+                        "categorys": categorys,
+                        "language": language,
+                    })
 
+                else:
+                    return render(request, 'zx-list.html', {
+                        "categorys": categorys,
+                        "language": language,
+
+                    })
             # 分页功能
             try:
                 page = request.GET.get('page', 1)  # 获取n（page=n）,默认显示第一页
